@@ -52,21 +52,6 @@ public class FortuneTelling extends HttpServlet {
         
         RequestDispatcher rd = request.getRequestDispatcher(result);
         rd.forward(request, response);
-        
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>本日の運勢</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>今日のあなたの運勢は。。。" + luckArray[index] + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
