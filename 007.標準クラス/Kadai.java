@@ -37,6 +37,7 @@ public class Kadai {
         cal.set(2016, 1, 1, 0, 0, 0);
         Date date = cal.getTime();
         
+        output += date + "<br>";
         output += date.getTime() + "<br>";
         
         return output;
