@@ -1,0 +1,29 @@
+#menu {
+  position:fixed;
+  width:100%;
+  padding:0;
+  margin:0;
+  margin-right : 60px;
+  list-style-type: none;
+}
+#menu li {
+  width:20%;
+  float:right;
+  padding:0;
+  margin:0;
+  text-align:right;
+}
+#menu li a {
+  width:auto;
+  color:#fff;
+  font-size:12px;
+  font-weight:bold;
+  padding:10px 0;
+  text-decoration:none;
+  display:block;
+  background:#666;
+}
+
+#menu li a:hover {
+  background:#555;
+}
