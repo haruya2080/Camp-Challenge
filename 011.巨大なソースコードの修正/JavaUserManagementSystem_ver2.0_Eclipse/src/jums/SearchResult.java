@@ -27,20 +27,28 @@ public class SearchResult extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try{
-            request.setCharacterEncoding("UTF-8");//リクエストパラメータの文字コードをUTF-8に変更
+        	//リクエストパラメータの文字コードをUTF-8に変更
+            request.setCharacterEncoding("UTF-8");
 
             // セッションを作成
-            HttpSession hs = request.getSession(true);
+            HttpSession session = request.getSession(true);
+
+            //アクセスルートチェック
+            String accesschk = request.getParameter("ac");
+            if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+                throw new Exception("不正なアクセスです");
+            }
+
             // セッションから詳細結果を削除（残っていると前回のデータにアクセスしてしまうため）
-            hs.removeAttribute(MySessionNames.ResultDataDTO);
+            session.removeAttribute(MySessionNames.ResultDataDTO);
 
             // セッションから結果を取得
             ArrayList<UserDataDTO> resultDatas
-            	= (ArrayList<UserDataDTO>)hs.getAttribute(MySessionNames.ResultDatas);
+            	= (ArrayList<UserDataDTO>)session.getAttribute(MySessionNames.ResultDatas);
 
             // 結果がセッションにない場合(再検索)
             if (resultDatas == null) {
-            	UserDataDTO searchData = (UserDataDTO)hs.getAttribute(MySessionNames.SearchData);
+            	UserDataDTO searchData = (UserDataDTO)session.getAttribute(MySessionNames.SearchData);
 
             	// 検索データがセッションにない場合(新しい検索データを使用して検索)
             	if (searchData == null) {
@@ -54,12 +62,12 @@ public class SearchResult extends HttpServlet {
                     searchData = new UserDataDTO();
                     udb.UD2DTOMapping(searchData);
 
-                    hs.setAttribute(MySessionNames.SearchData, searchData);
+                    session.setAttribute(MySessionNames.SearchData, searchData);
             	}
             	// 検索実行
                 resultDatas = UserDataDAO.getInstance().search(searchData);
                 // 複数の結果をセッションに保存
-                hs.setAttribute(MySessionNames.ResultDatas, resultDatas);
+                session.setAttribute(MySessionNames.ResultDatas, resultDatas);
             }
 
             request.getRequestDispatcher("/searchresult.jsp").forward(request, response);

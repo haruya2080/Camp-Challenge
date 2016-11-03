@@ -25,10 +25,24 @@ public class Delete extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        HttpSession hs = request.getSession();
+    	try {
+        	request.setCharacterEncoding("UTF-8");
 
-        request.getRequestDispatcher("/delete.jsp").forward(request, response);
+            HttpSession session = request.getSession(true);
+
+            //アクセスルートチェック
+            String accesschk = request.getParameter("ac");
+            if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+                throw new Exception("不正なアクセスです");
+            }
+
+            session.setAttribute("ac", (int) (Math.random() * 1000));
+            request.getRequestDispatcher("/delete.jsp").forward(request, response);
+        } catch(Exception e) {
+            //何らかの理由で失敗したらエラーページにエラー文を渡して表示。想定は不正なアクセスとDBエラー
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

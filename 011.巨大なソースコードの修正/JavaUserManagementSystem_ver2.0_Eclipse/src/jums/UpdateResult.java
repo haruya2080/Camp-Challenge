@@ -29,7 +29,13 @@ public class UpdateResult extends HttpServlet {
         try {
         	request.setCharacterEncoding("UTF-8");
         	// セッションの作成
-        	HttpSession hs = request.getSession(true);
+        	HttpSession session = request.getSession(true);
+
+        	//アクセスルートチェック
+            String accesschk = request.getParameter("ac");
+            if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+                throw new Exception("不正なアクセスです");
+            }
 
             //フォームからの入力を取得して、JavaBeansに格納
             UserDataBeans updateData = new UserDataBeans();
@@ -48,23 +54,23 @@ public class UpdateResult extends HttpServlet {
             	updateData.UD2DTOMapping(udd);
 
             	// セッションに保持していたIDをセット（アップデート対象を設定するため）
-            	udd.setUserID((Integer)hs.getAttribute("userID"));
+            	udd.setUserID((Integer)session.getAttribute("userID"));
             	// 現在時刻をセット（セッションに保持する方にも必要なのでここでセット１）
             	udd.setNewDate(new Timestamp(System.currentTimeMillis()));
 
             	// アップデート実行
             	UserDataDAO.getInstance().update(udd);
             	// 更新したため、セッションにある詳細結果も更新
-            	hs.setAttribute(MySessionNames.ResultDataDTO, udd);
+            	session.setAttribute(MySessionNames.ResultDataDTO, udd);
             	// 再検索が必要なので検索結果をセッションから削除
-            	hs.removeAttribute(MySessionNames.ResultDatas);
+            	session.removeAttribute(MySessionNames.ResultDatas);
                 // 結果画面に遷移
                 request.getRequestDispatcher("/updateresult.jsp").forward(request, response);
             } else {
             	// セッションの更新
-            	hs.setAttribute(MySessionNames.ResultDataUD, updateData);
+            	session.setAttribute(MySessionNames.ResultDataUD, updateData);
             	// 入力に不備があった場合、Update画面に戻す
-            	response.sendRedirect("Update");
+            	response.sendRedirect("Update?ac=" + accesschk + "&error=yes");
             }
         } catch (Exception e) {
         	//何らかの理由で失敗したらエラーページにエラー文を渡して表示。想定は不正なアクセスとDBエラー

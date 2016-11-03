@@ -57,6 +57,69 @@ public class JumsHelper {
     }
 
     /**
+     * 名前が未入力かチェック
+     * @param chkList
+     * @return
+     */
+    public String chkinputName(ArrayList<String> chkList) {
+    	return (chkList.contains("name")) ? "※名前が未入力です。" : "";
+    }
+
+    /**
+     * 年が未入力かチェック
+     * @param chkList
+     * @return
+     */
+    public String chkinputYear(ArrayList<String> chkList) {
+    	return (chkList.contains("year")) ? "※年が未入力です。" : "";
+    }
+
+    /**
+     * 月が未入力かチェック
+     * @param chkList
+     * @return
+     */
+    public String chkinputMonth(ArrayList<String> chkList) {
+    	return (chkList.contains("month")) ? "※月が未入力です。" : "";
+    }
+
+    /**
+     * 日が未入力かチェック
+     * @param chkList
+     * @return
+     */
+    public String chkinputDay(ArrayList<String> chkList) {
+    	return (chkList.contains("day")) ? "※日が未入力です。" : "";
+    }
+
+    /**
+     * 種別が未入力かチェック
+     * @param chkList
+     * @return
+     */
+    public String chkinputType(ArrayList<String> chkList) {
+    	return (chkList.contains("type")) ? "※種別が未入力です。" : "";
+    }
+
+    /**
+     * 電話番号が未入力かチェック
+     * @param chkList
+     * @return
+     */
+    public String chkinputTell(ArrayList<String> chkList) {
+    	return (chkList.contains("tell")) ? "※電話番号が未入力です。" : "";
+    }
+
+    /**
+     * 自己紹介が未入力かチェック
+     * @param chkList
+     * @return
+     */
+    public String chkinputComment(ArrayList<String> chkList) {
+    	return (chkList.contains("comment")) ? "※自己紹介が未入力です。" : "";
+    }
+
+    /**
      * 種別は数字で取り扱っているので画面に表示するときは日本語に変換
      * @param i
      * @return
@@ -71,6 +134,14 @@ public class JumsHelper {
                 return "その他";
         }
         return "";
+    }
+
+    /**
+     * 改行を<br>タグに変換する
+     * @return 変換後の文字列を出力
+     */
+    public String exBrTagFromRN (String str) {
+    	return str.replace("\r\n", "<br>");
     }
 
     public String chkSelected (int num1, int num2) {

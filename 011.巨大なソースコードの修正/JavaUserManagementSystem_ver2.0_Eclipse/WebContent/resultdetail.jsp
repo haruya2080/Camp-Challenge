@@ -21,17 +21,20 @@
         	<tr><td>生年月日</td><td><%=jh.birthdayFormat(udd.getBirthday())%><td></tr>
         	<tr><td>種別</td><td><%=jh.exTypenum(udd.getType())%><td></tr>
         	<tr><td>電話番号</td><td><%= udd.getTell()%><td></tr>
-        	<tr><td>自己紹介</td><td><%= udd.getComment()%><td></tr>
+        	<tr><td>自己紹介</td><td><%= jh.exBrTagFromRN(udd.getComment())%><td></tr>
         	<tr><td>登録日時</td><td><%= udd.getNewDate()%><td></tr>
         </table>
         <form action="Update" method="POST">
         	<input type="submit" name="update" value="変更"style="width:100px">
+        	<input type="hidden" name="ac"  value="<%= session.getAttribute("ac")%>">
         </form>
         <form action="Delete" method="POST">
         	<input type="submit" name="delete" value="削除"style="width:100px">
+        	<input type="hidden" name="ac"  value="<%= session.getAttribute("ac")%>">
         </form>
         <form action="SearchResult" method="POST">
         	<input type="submit" name="back" value="検索結果へ戻る"style="width:200px">
+        	<input type="hidden" name="ac"  value="<%= session.getAttribute("ac")%>">
         </form>
 		<br>
 		<%=jh.home() %>

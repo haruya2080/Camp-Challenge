@@ -28,9 +28,10 @@ public class ResultDetail extends HttpServlet {
         try{
             request.setCharacterEncoding("UTF-8");//リクエストパラメータの文字コードをUTF-8に変更
             // セッションの作成、取得
-            HttpSession hs = request.getSession(true);
+            HttpSession session = request.getSession(true);
 
-            UserDataDTO resultData = (UserDataDTO)hs.getAttribute(MySessionNames.ResultDataDTO);
+            UserDataDTO resultData = (UserDataDTO)session.getAttribute(
+            		MySessionNames.ResultDataDTO);
 
             // 検索結果がセッションに存在するか
             if (resultData == null) {
@@ -48,12 +49,13 @@ public class ResultDetail extends HttpServlet {
                 resultData.DTO2UDMapping(userData);
 
                 // 詳細情報をセッションに格納
-                hs.setAttribute(MySessionNames.ResultDataUD, userData);
-                hs.setAttribute(MySessionNames.ResultDataDTO, resultData);
+                session.setAttribute(MySessionNames.ResultDataUD, userData);
+                session.setAttribute(MySessionNames.ResultDataDTO, resultData);
 
-                hs.setAttribute("userID", Integer.valueOf(resultData.getUserID()));
+                session.setAttribute("userID", Integer.valueOf(resultData.getUserID()));
             }
 
+            session.setAttribute("ac", (int) (Math.random() * 1000));
             request.getRequestDispatcher("/resultdetail.jsp").forward(request, response);
         }catch(Exception e){
             //何らかの理由で失敗したらエラーページにエラー文を渡して表示。想定は不正なアクセスとDBエラー

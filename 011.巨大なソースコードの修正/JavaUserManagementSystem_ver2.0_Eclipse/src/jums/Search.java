@@ -25,9 +25,10 @@ public class Search extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    	HttpSession hs = request.getSession();
-    	hs.removeAttribute(MySessionNames.ResultDatas);
-    	hs.removeAttribute(MySessionNames.SearchData);
+    	HttpSession session = request.getSession();
+    	session.removeAttribute(MySessionNames.ResultDatas);
+    	session.removeAttribute(MySessionNames.SearchData);
+    	session.setAttribute("ac", (int) (Math.random() * 1000));
         request.getRequestDispatcher("/search.jsp").forward(request, response);
     }
 

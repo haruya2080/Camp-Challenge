@@ -20,7 +20,7 @@
         	<tr><td>生年月日</td><td><%=jh.birthdayFormat(udd.getBirthday())%><td></tr>
         	<tr><td>種別</td><td><%=jh.exTypenum(udd.getType())%><td></tr>
         	<tr><td>電話番号</td><td><%= udd.getTell()%><td></tr>
-        	<tr><td>自己紹介</td><td><%= udd.getComment()%><td></tr>
+        	<tr><td>自己紹介</td><td><%= jh.exBrTagFromRN(udd.getComment())%><td></tr>
         	<tr><td>登録日時</td><td><%= udd.getNewDate()%><td></tr>
 		</table><br>
 		以上の内容で登録しました。<br>

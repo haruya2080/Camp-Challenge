@@ -28,12 +28,20 @@ public class DeleteResult extends HttpServlet {
     	try {
         	request.setCharacterEncoding("UTF-8");
         	// セッションの作成
-        	HttpSession hs = request.getSession(true);
+        	HttpSession session = request.getSession(true);
+
+            //アクセスルートチェック
+            String accesschk = request.getParameter("ac");
+            if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+                throw new Exception("不正なアクセスです");
+            }
 
         	// デリート実行
-        	UserDataDAO.getInstance().delete((Integer)hs.getAttribute("userID"));
+        	UserDataDAO.getInstance().delete((Integer)session.getAttribute("userID"));
         	// 再検索が必要なので検索結果をセッションから削除
-        	hs.removeAttribute(MySessionNames.ResultDatas);
+        	session.removeAttribute(MySessionNames.ResultDatas);
+
+        	session.setAttribute("ac", (int) (Math.random() * 1000));
         	// 削除結果画面に遷移
         	request.getRequestDispatcher("/deleteresult.jsp").forward(request, response);
         } catch (Exception e) {

@@ -16,20 +16,21 @@
     </head>
     <body>
     <h1>削除確認</h1>
-    以下の内容を削除します。よろしいですか？
+    	<font color="#ff0000">以下の内容を削除します。よろしいですか？</font>
 	<table class="simple">
        	<tr><td>名前</td><td><%= udd.getName()%><td></tr>
        	<tr><td>生年月日</td><td><%=jh.birthdayFormat(udd.getBirthday())%><td></tr>
        	<tr><td>種別</td><td><%=jh.exTypenum(udd.getType())%><td></tr>
        	<tr><td>電話番号</td><td><%= udd.getTell()%><td></tr>
-       	<tr><td>自己紹介</td><td><%= udd.getComment()%><td></tr>
+       	<tr><td>自己紹介</td><td><%= jh.exBrTagFromRN(udd.getComment())%><td></tr>
        	<tr><td>登録日時</td><td><%= udd.getNewDate()%><td></tr>
 	</table><br>
     <form action="DeleteResult" method="POST">
       <input type="submit" name="YES" value="はい"style="width:100px">
+      <input type="hidden" name="ac"  value="<%= session.getAttribute("ac")%>">
     </form><br>
     <form action="ResultDetail" method="POST">
-      <input type="submit" name="NO" value="詳細画面に戻る"style="width:100px">
+      <input type="submit" name="NO" value="いいえ"style="width:100px">
     </form>
 
 

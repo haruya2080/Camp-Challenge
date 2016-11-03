@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -25,11 +26,31 @@ public class Update extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
+        try {
+        	request.setCharacterEncoding("UTF-8");
 
-        RequestDispatcher rd = request.getRequestDispatcher("update.jsp");
-        rd.forward(request, response);
+            HttpSession session = request.getSession(true);
+
+            //アクセスルートチェック
+            String accesschk = request.getParameter("ac");
+            if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+                throw new Exception("不正なアクセスです");
+            }
+
+            // エラーで戻ってきたか調査
+            if (request.getParameter("error") != null) {
+            	// jspにエラーを伝える
+            	request.setAttribute("error", "yes");
+            }
+
+            session.setAttribute("ac", (int) (Math.random() * 1000));
+            RequestDispatcher rd = request.getRequestDispatcher("update.jsp");
+            rd.forward(request, response);
+        } catch(Exception e) {
+            //何らかの理由で失敗したらエラーページにエラー文を渡して表示。想定は不正なアクセスとDBエラー
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
